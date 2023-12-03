@@ -8,12 +8,19 @@ def register_view(request):
     if request.method == "POST":
         username  = request.POST.get('username')
         email = request.POST.get('email')
-        password = request.POST.get('password')
-        cpassword = request.POST.get('cpassword')
+        password = request.POST.get('pass')
+        cpassword = request.POST.get('cpass')
         if password != cpassword or len(password) == 0 or len(cpassword) == 0:
             messages.error(request, "Password do not match")
             return redirect('register')
-        # user create 
+        # more validation can be added here 
+        #check if user already exists
+        if User.objects.filter(username=username).exists():
+            messages.error(request, 'Username already exists')
+            return redirect('register')
+        if User.objects.filter(email=email).exists():
+            messages.error(request, 'Email already exists')
+            return redirect('register')
         # user create karo
         user = User.objects.create_user(username, email, password)
         messages.success(request, "Account create successfully")
@@ -23,13 +30,14 @@ def register_view(request):
     
 def login_view(request):
     if request.method == "POST":
-        email = request.POST.get('email')
+        username = request.POST.get('username')
         password = request.POST.get('pass')
-        if len(email) == 0 or len(password) == 0:
+        print(username, password)
+        if len(username) == 0 or len(password) == 0:
             messages.error(request, "Bad Login Details")
             return redirect('login')
         
-        user = authenticate(request, email=email, password=password)
+        user = authenticate(username=username, password=password)
         if user is not None:
             messages.success(request, "Login in successfully")
             login(request, user)
@@ -39,7 +47,7 @@ def login_view(request):
             return redirect('login')
         
     else:
-        return render(request, 'accounts/login.html')
+        return render(request, 'accounts/login1.html')
 
 def logout_view(request):
     logout(request)

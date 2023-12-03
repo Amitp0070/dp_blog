@@ -1,0 +1,47 @@
+{% extends 'layout/base.html' %}
+
+
+{% block css %}
+<style>
+    body{
+        background-color: #dbf79f;
+    }
+    #login-box{
+        min-height: 60vh;
+        padding-top: 3rem;
+    }
+    .form-control{
+        border: none !important;
+        
+    }
+</style>
+{% endblock css %}
+
+
+{% block content %}
+<div class="container" id="login-box">
+    <div class="row">
+        <div class="col-lg-4 mx-auto">
+            <form method="post">
+                {% csrf_token %}
+                <h1>Login</h1>
+                {% include 'components/message.html' %}
+                <div class="mb-3">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" class="form-control" name="username" id="username" aria-describedby="helpId"
+                        placeholder="Your username">
+                    <small id="helpId" class="form-text text-muted">enter your registered email</small>
+                </div>
+                <div class="mb-3">
+                  <label for="pass" class="form-label">Password</label>
+                  <input type="text"
+                    class="form-control" name="pass" id="pass" aria-describedby="helpId" placeholder="Enter your password">
+                  <small id="helpId" class="form-text text-muted">enter your password</small>
+                </div>
+                <button type="Sumbit" class="btn btn-primary">Login</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
