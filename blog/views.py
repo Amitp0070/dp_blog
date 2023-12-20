@@ -162,7 +162,7 @@ def add_view(request):
 def my_articles(request):
     # get user articles
     article_list = Article.objects.filter(author = request.user)
-    paginator = Paginator(article_list, 12)
+    paginator = Paginator(article_list, 8)
     page = request.GET.get('p',1)
     ctx = {'articles' : paginator.get_page(page)}
     return render(request, 'blog/my_articles.html', ctx)
